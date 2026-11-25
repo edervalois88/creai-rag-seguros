@@ -145,7 +145,7 @@ code {
       305px,
       1fr
     );
-  align-items: start;
+  align-items: stretch;
   padding-bottom: 25px;
 }
 .controls,
@@ -218,6 +218,8 @@ select {
   border: 1px solid var(--line);
 }
 .chat {
+  display: flex;
+  flex-direction: column;
   border-radius: var(--radius) 0 0 var(--radius);
 }
 .evidence {
@@ -252,6 +254,7 @@ select {
   white-space: nowrap;
 }
 .history {
+  flex: 1 1 auto;
   height: clamp(285px, 46dvh, 510px);
   overflow: auto;
   overscroll-behavior: contain;
