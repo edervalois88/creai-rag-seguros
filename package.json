@@ -1,0 +1,38 @@
+{
+  "name": "creai-rag-seguros",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "format": "biome check --write .",
+    "format:check": "biome format .",
+    "lint:check": "biome lint .",
+    "type-check": "tsc --noEmit",
+    "check-arch": "node scripts/check-architecture.mjs",
+    "verify": "npm run format:check && npm run lint:check && npm run type-check && npm run check-arch && npm run build && node scripts/run-python.mjs -m unittest -q",
+    "e2e": "playwright test --config tests/playwright.config.ts",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.1",
+    "@biomejs/biome": "2.6.9",
+    "@playwright/test": "1.65.1",
+    "@types/node": "24.10.1",
+    "@types/react": "19.3.3",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.3.0",
+    "husky": "9.1.7",
+    "typescript": "5.9.3",
+    "vite": "8.3.8"
+  }
+}

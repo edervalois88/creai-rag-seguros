@@ -2,6 +2,29 @@
 
 Demostración para una junta técnica. El corpus y las identidades son ficticios. No se conecta a ninguna aseguradora ni aprueba, rechaza o paga siniestros. Lee [JUNTA.md](JUNTA.md) antes de presentarla.
 
+## Interfaz para la junta
+
+Virel Financiera es la marca ficticia del portal. La pantalla combina el chat con la cláusula, la regla aplicada y los spans reales de OpenTelemetry. Usa **Grúa con endoso** y luego **Grúa antes del endoso**. Selecciona **Ver evidencia** en una respuesta anterior para recuperar sus propios detalles. El escenario **Revisión humana** registra la pausa y el acuse simulado con trazas correlacionadas.
+
+La web usa React y un endpoint Python del mismo origen. El servidor ejecuta el mismo LangGraph de la demo CLI y mantiene aislado el estado de cada solicitud. La conversación y sus trazas permanecen en la pestaña durante la demostración. Los perfiles y el ajustador usan datos ficticios. El modo web usa respuestas extractivas.
+
+Desde la carpeta del proyecto, instala Node 24 y Python 3.13. Crea un entorno virtual .venv e instala requirements.txt. Después ejecuta:
+
+    npm ci
+    npm run verify
+
+Para levantar el chat, inicia el API y luego el cliente en dos terminales:
+
+    node scripts/run-python.mjs -m api.chat
+    npm run dev
+
+Para probar los flujos en escritorio y móvil:
+
+    npx playwright install chromium
+    npm run e2e
+
+DEMO_PYTHON permite seleccionar otro intérprete con las dependencias instaladas y DEMO_BASE_URL permite correr Playwright contra un despliegue. Las convenciones de entrega y revisión están en AGENTS.md.
+
 ## Ejecutar en Windows
 
 Desde esta carpeta, con Python 3.13. Solo la instalación inicial necesita acceso a PyPI.

@@ -23,6 +23,8 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import ConsoleSpanExporter, SimpleSpanProcessor
 from typing import TypedDict
 
+from trace_capture import TraceCapture
+
 RULESET = 'auto-demo-2026.11.25'
 INTRO = {'directa': '', 'referencia': 'Esto dicen las fuentes de la consulta.\n'}
 PUBLIC_TOPIC = 'reporte'
@@ -117,7 +119,7 @@ def ollama_plan(model: str, candidates: list[dict], topics: list[str]) -> dict:
 
 
 class Assistant:
-    def __init__(self, audit: Path, model: str | None = None, export: bool = False, corpus: Path | None = None):
+    def __init__(self, audit: Path | None, model: str | None = None, export: bool = False, corpus: Path | None = None):
         self.audit = audit
         self.model = model
         raw = (corpus or Path(__file__).with_name('corpus.json')).read_bytes()
@@ -130,6 +132,8 @@ class Assistant:
         self.received = {}
         resource = Resource.create({'service.name': 'creai-rag-seguros-demo'})
         self.provider = TracerProvider(resource=resource)
+        self.capture = TraceCapture()
+        self.provider.add_span_processor(self.capture)
         if export:
             self.provider.add_span_processor(SimpleSpanProcessor(ConsoleSpanExporter(out=sys.stderr)))
         self.metrics = MeterProvider(resource=resource, metric_readers=[
@@ -288,7 +292,12 @@ class Assistant:
             span.set_attribute('insurance.request_id', request_id)
             if previous:
                 span.set_attribute('insurance.previous_trace_id', previous)
-            result = self.graph.invoke(inputs, cfg)
+            trace_number = span.get_span_context().trace_id
+            self.capture.start(trace_number)
+            try:
+                result = self.graph.invoke(inputs, cfg)
+            finally:
+                steps = self.capture.finish(trace_number)
             if result.get('__interrupt__'):
                 result.update(status='pending_review', reason='dictamen_reservado',
                               answer='La demo dejó el caso en espera del ajustador. No se envió a una aseguradora.',
@@ -303,8 +312,10 @@ class Assistant:
                      'status': result['status'], 'reason': result['reason'], 'mode': result['mode'],
                      'duration_ms': duration, 'ruleset': RULESET, 'corpus_sha256': self.index_hash,
                      'citations': result['citations'], 'superseded': result.get('omitted', [])}
-            with self.audit.open('a', encoding='utf-8') as output:
-                output.write(json.dumps(event, ensure_ascii=False) + '\n')
+            if self.audit is not None:
+                with self.audit.open('a', encoding='utf-8') as output:
+                    output.write(json.dumps(event, ensure_ascii=False) + '\n')
+        event['steps'] = steps
         event['answer'] = result['answer']
         if result['status'] in {'pending_review', 'received'}:
             event['case_id'] = request_id
