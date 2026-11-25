@@ -22,7 +22,8 @@ export function ScenarioControls({
   onScenario,
 }: Props) {
   return (
-    <section className="controls" aria-label="Contexto y escenarios">
+    <section className="controls" aria-labelledby="context-title">
+      <h2 id="context-title">Datos de la consulta</h2>
       <div className="fields">
         <label>
           Sesión de prueba
@@ -48,7 +49,7 @@ export function ScenarioControls({
         </label>
       </div>
       <fieldset className="scenarios">
-        <legend className="visually-hidden">Escenarios de ejemplo</legend>
+        <legend className="scenario-title">Casos de ejemplo</legend>
         {scenarios.map(
           ({ id, label, question, profile, incidentDate, simulateAck }) => (
             <button

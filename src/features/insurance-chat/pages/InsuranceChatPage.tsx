@@ -57,31 +57,33 @@ export function InsuranceChatPage() {
       <header className="masthead">
         <div className="masthead-inner">
           <div className="brand">
-            <span className="brand-symbol" aria-hidden="true">
-              §
-            </span>{" "}
-            Seguro de auto
+            <span className="brand-symbol" aria-hidden="true" />
+            <span>
+              Virel <small>Financiera</small>
+            </span>
           </div>
-          <span className="environment">Demostración con datos ficticios</span>
+          <span className="environment">Entorno de demostración</span>
         </div>
       </header>
       <main className="workspace">
         <div className="intro">
-          <h1>Asistente de pólizas</h1>
+          <p className="product">
+            Atención de seguros <span aria-hidden="true">/</span> Auto
+          </p>
+          <h1>Consultas de cobertura</h1>
           <p>
-            Consulta el contrato y revisa qué evidencia usó el asistente para
-            responder.
+            Revisa qué dice la póliza y qué aplica a la fecha del siniestro.
           </p>
         </div>
-        <ScenarioControls
-          profile={profile}
-          incidentDate={incidentDate}
-          busy={Boolean(pending)}
-          onProfile={setProfile}
-          onDate={setDate}
-          onScenario={handleSend}
-        />
         <div className="workspace-grid">
+          <ScenarioControls
+            profile={profile}
+            incidentDate={incidentDate}
+            busy={Boolean(pending)}
+            onProfile={setProfile}
+            onDate={setDate}
+            onScenario={handleSend}
+          />
           <ChatPanel
             turns={turns}
             selectedId={selectedId}

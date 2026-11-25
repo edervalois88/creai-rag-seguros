@@ -41,7 +41,6 @@ export function ChatPanel({
     <section className="panel chat" aria-labelledby="chat-title">
       <header className="panel-header">
         <h2 id="chat-title">Conversación</h2>
-        <span className="subtle">Seguro de auto</span>
       </header>
       <div
         role="log"
@@ -54,10 +53,10 @@ export function ChatPanel({
       >
         {turns.length === 0 && !pending && (
           <div className="greeting">
-            <h3>¿Qué quieres consultar?</h3>
+            <span className="message-label">Asistente de Virel</span>
             <p>
-              Elige un escenario de ejemplo o escribe una pregunta sobre
-              reporte, deducible o grúa.
+              Hola. Puedo ayudarte a consultar el deducible, los límites de grúa
+              o cómo reportar un choque.
             </p>
           </div>
         )}
@@ -72,7 +71,7 @@ export function ChatPanel({
                 <span className="message-label">
                   {reply.status === "received"
                     ? "Ajustador simulado"
-                    : "Asistente"}
+                    : "Asistente de Virel"}
                 </span>
                 <p>{reply.answer}</p>
                 <button
@@ -125,9 +124,7 @@ export function ChatPanel({
           Enviar
         </button>
       </form>
-      <p className="chat-note">
-        Usa preguntas ficticias. Evita introducir datos personales.
-      </p>
+      <p className="chat-note">Usa únicamente datos ficticios.</p>
     </section>
   );
 }

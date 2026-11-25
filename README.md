@@ -4,7 +4,7 @@ Demostración para una junta técnica. El corpus y las identidades son ficticios
 
 ## Interfaz para la junta
 
-La pantalla combina el chat con la cláusula, la regla aplicada y los spans reales de OpenTelemetry. Usa **Grúa con endoso** y luego **Grúa antes del endoso**. Selecciona **Ver evidencia** en una respuesta anterior para recuperar sus propios detalles. El escenario **Revisión humana** registra la pausa y el acuse simulado con trazas correlacionadas.
+Virel Financiera es la marca ficticia del portal. La pantalla combina el chat con la cláusula, la regla aplicada y los spans reales de OpenTelemetry. Usa **Grúa con endoso** y luego **Grúa antes del endoso**. Selecciona **Ver evidencia** en una respuesta anterior para recuperar sus propios detalles. El escenario **Revisión humana** registra la pausa y el acuse simulado con trazas correlacionadas.
 
 La web usa React y un endpoint Python del mismo origen. El servidor ejecuta el mismo LangGraph de la demo CLI y mantiene aislado el estado de cada solicitud. La conversación y sus trazas permanecen en la pestaña durante la demostración. Los perfiles y el ajustador usan datos ficticios. El modo web usa respuestas extractivas.
 

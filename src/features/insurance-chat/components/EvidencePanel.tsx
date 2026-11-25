@@ -29,32 +29,38 @@ export function EvidencePanel({ selected }: Props) {
           </span>
         )}
       </header>
-      <section className="evidence-section" aria-labelledby="clause-title">
-        <h3 id="clause-title">Cláusula</h3>
-        {!selected && (
-          <p className="subtle">Consulta un escenario para ver su fuente.</p>
-        )}
-        {selected && selected.citations.length === 0 && (
-          <p className="subtle">Esta respuesta no usó cláusulas.</p>
-        )}
-        {selected?.citations.map((cite) => (
-          <div className="document" key={cite.id}>
-            <p className="document-name">{cite.source}</p>
-            <p className="subtle">
-              {cite.clause} · Versión {cite.version} · <code>{cite.id}</code>
-            </p>
-            <blockquote>{cite.text}</blockquote>
-            <p className="subtle">
-              Vigencia desde {cite.from}
-              {cite.to && ` hasta ${cite.to} (excluida)`}
-            </p>
-          </div>
-        ))}
-      </section>
-      <section className="evidence-section" aria-labelledby="rule-title">
-        <h3 id="rule-title">Regla aplicada</h3>
-        {selected ? (
-          <>
+      {!selected ? (
+        <div className="evidence-empty">
+          <p>Selecciona un caso o envía una pregunta.</p>
+          <p className="subtle">
+            Aquí verás la cláusula consultada, la regla aplicada y la traza de
+            la respuesta.
+          </p>
+        </div>
+      ) : (
+        <>
+          <section className="evidence-section" aria-labelledby="clause-title">
+            <h3 id="clause-title">Cláusula</h3>
+            {selected.citations.length === 0 && (
+              <p className="subtle">Esta respuesta no usó cláusulas.</p>
+            )}
+            {selected.citations.map((cite) => (
+              <div className="document" key={cite.id}>
+                <p className="document-name">{cite.source}</p>
+                <p className="subtle">
+                  {cite.clause} · Versión {cite.version} ·{" "}
+                  <code>{cite.id}</code>
+                </p>
+                <blockquote>{cite.text}</blockquote>
+                <p className="subtle">
+                  Vigencia desde {cite.from}
+                  {cite.to && ` hasta ${cite.to} (excluida)`}
+                </p>
+              </div>
+            ))}
+          </section>
+          <section className="evidence-section" aria-labelledby="rule-title">
+            <h3 id="rule-title">Regla aplicada</h3>
             <p className="rule-title">{selected.rule.title}</p>
             <p>{selected.rule.description}</p>
             {selected.rule.superseded.length > 0 && (
@@ -65,20 +71,14 @@ export function EvidencePanel({ selected }: Props) {
             <p className="subtle">
               Versión <code>{selected.rule.version}</code>
             </p>
-          </>
-        ) : (
-          <p className="subtle">Verás la decisión que tomó el grafo.</p>
-        )}
-      </section>
-      <section
-        className="evidence-section trace-section"
-        aria-labelledby="trace-title"
-      >
-        <h3 id="trace-title">
-          Traza <span className="subtle">OpenTelemetry</span>
-        </h3>
-        {selected ? (
-          <>
+          </section>
+          <section
+            className="evidence-section trace-section"
+            aria-labelledby="trace-title"
+          >
+            <h3 id="trace-title">
+              Traza <span className="subtle">OpenTelemetry</span>
+            </h3>
             <ol className="trace-list">
               {selected.trace.steps.map((step) => (
                 <li key={step.id}>
@@ -108,11 +108,9 @@ export function EvidencePanel({ selected }: Props) {
                 )}
               </dl>
             </details>
-          </>
-        ) : (
-          <p className="subtle">Los pasos ejecutados aparecen aquí.</p>
-        )}
-      </section>
+          </section>
+        </>
+      )}
     </aside>
   );
 }
